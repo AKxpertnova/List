@@ -7,6 +7,7 @@ sap.ui.define([
      */
     function (Controller, JSONModel) {
         "use strict";
+        var oInitProductCollectionModel ;
 
         return Controller.extend("listenanzeige.controller.Listenanzeige", {
 
@@ -18,7 +19,6 @@ sap.ui.define([
 		        const oDataModel = new sap.ui.model.odata.ODataModel(strURI, true);
                 let oErrorModel = new JSONModel();
                 let oModel = new JSONModel();
-                
 
                 // Init ErrorModel
                 oErrorModel.setData( {ErrorMessage : 'reading Data...' });
@@ -28,8 +28,10 @@ sap.ui.define([
                 oDataModel.read(strPath, {
 					success: function (oData) {		
 
-                        oModel.setData(this.ExtractoData(oData.results));						
+                        oModel.setData(this.extractoData(oData.results));						
                         this.getView().setModel(oModel,'ProductCollectionModel');
+
+                        oInitProductCollectionModel = oModel;
                         oErrorModel.setData( {ErrorMessage : 'reading Data completed!' });
 
 					}.bind(this),
@@ -39,13 +41,12 @@ sap.ui.define([
 				});
             },
 
-            ExtractoData: function (data) {
+            extractoData: function (data) {
 				let oData = [];
                 let oResults = new JSONModel();
                 let strDay ;
                 let strMonth ;
-                let strDate ;
-                let strYear;
+                let strDate ;                
 
 				data.forEach(function (element) {
                     strDay = element.Startdate.getDate()
@@ -72,6 +73,39 @@ sap.ui.define([
                 oResults = ( { 'ProductCollection': oData })
 				return oResults;
 			},
+
+            onSearch(oEvent) {
+                let sValue = oEvent.getParameter("query");
+                let oProductCollectionModel = this.getView().getModel('ProductCollectionModel').getData();
+                let oModel = new JSONModel();
+                let arrModel = [];
+                let oData = [];
+                let intCounter = 0;
+                let intCounter2 = 0;
+                let oResult = new JSONModel();
+
+                if (sValue !== ''){                
+                    for (intCounter = 0; intCounter < oProductCollectionModel.ProductCollection.length; intCounter++){                        
+                        if (oProductCollectionModel.ProductCollection[intCounter].Amount.indexOf(sValue) > -1 
+                        || oProductCollectionModel.ProductCollection[intCounter].BatchID.toLowerCase().indexOf(sValue) > -1
+                        || oProductCollectionModel.ProductCollection[intCounter].Customer.toLowerCase().indexOf(sValue) > -1
+                        || oProductCollectionModel.ProductCollection[intCounter].Plant.toLowerCase().indexOf(sValue) > -1
+                        || oProductCollectionModel.ProductCollection[intCounter].Product.toLowerCase().indexOf(sValue) > -1
+                        || oProductCollectionModel.ProductCollection[intCounter].Startdate.indexOf(sValue) > -1
+                        || oProductCollectionModel.ProductCollection[intCounter].Unit.toLowerCase().indexOf(sValue) > -1) {
+                            oData.push(oProductCollectionModel.ProductCollection[intCounter]);
+                        } 
+                    }                     
+                    
+                    oResult = ( { 'ProductCollection': oData })
+                    oModel.setData(oResult);
+                    this.getView().setModel(oModel,'ProductCollectionModel');
+                } else {
+                    // insert full Model
+                    this.getView().setModel(oInitProductCollectionModel,'ProductCollectionModel');
+                }
+
+            },
 
             onAfterRendering() {
                
