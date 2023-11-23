@@ -2,7 +2,7 @@
 
 specVersion: "3.1"
 metadata:
-  name: listenanzeige
+  name: project1
 type: application
 server:
   customMiddleware:
@@ -15,6 +15,11 @@ server:
             - /resources
             - /test-resources
           url: https://ui5.sap.com
+        backend:
+          - path: /sap
+            url: http://sap.xpertnova.cloud:8000
+            client: '245'
+            destination: XD1_245
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:
@@ -24,5 +29,5 @@ server:
     - name: fiori-tools-preview
       afterMiddleware: fiori-tools-appreload
       configuration:
-        component: listenanzeige
+        component: project1
         ui5Theme: sap_horizon

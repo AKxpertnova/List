@@ -14,6 +14,17 @@
       "id": "@sap/generator-fiori:basic",
       "version": "1.11.4",
       "toolsId": "467173a8-6d3b-4ad6-930c-3ed3d2424554"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/sap/opu/odata/xpn/ES_SB_AK/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/metadata.xml",
+          "odataVersion": "2.0"
+        }
+      }
     }
   },
   "sap.ui": {
@@ -74,7 +85,15 @@
         "viewPath": "listenanzeige.view",
         "controlAggregation": "pages",
         "controlId": "app",
-        "clearControlAggregation": false
+        "clearControlAggregation": false,
+        "sample": {
+          "files": [
+            "List.view.xml",
+            "List.controller.js",
+            "Formatter.js",
+            "manifest.json"
+          ]
+        }
       },
       "routes": [
         {
