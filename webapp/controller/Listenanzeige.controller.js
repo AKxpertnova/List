@@ -12,29 +12,66 @@ sap.ui.define([
 
             onInit: function () {
 
+                // Declare variables
                 const strURI = '/sap/opu/odata/XPN/ES_SB_AK';
 		        const strPath = '/xXPNxES_DD_AK';
-		        const oNewModel = new sap.ui.model.odata.ODataModel(strURI, true);
+		        const oDataModel = new sap.ui.model.odata.ODataModel(strURI, true);
+                let oErrorModel = new JSONModel();
+                let oModel = new JSONModel();
+                
 
-                oNewModel.read(strPath, {
-					success: function (oData) {
-						console.log("Succesfully read DB");
-						this.getView().getModel().setProperty("/odata", oData);
-						//this.assignAppointments();
-						// Collect all project names in order to use them in export dialog
-						var aProjects = this.extractProjects(oData.results);
-						this.getView().getModel().setProperty("/Projects", aProjects);
+                // Init ErrorModel
+                oErrorModel.setData( {ErrorMessage : 'reading Data...' });
+				this.getView().setModel(oErrorModel, 'ErrorModel');
+
+                // Read oData
+                oDataModel.read(strPath, {
+					success: function (oData) {		
+
+                        oModel.setData(this.ExtractoData(oData.results));						
+                        this.getView().setModel(oModel,'ProductCollectionModel');
+                        oErrorModel.setData( {ErrorMessage : 'reading Data completed!' });
 
 					}.bind(this),
-					error: function (oError) {
-						console.log("Fehler beim lesen der oData", oError);
+					error: function () {
+						oErrorModel.setData( {ErrorMessage : 'Error in reading oData!' });
 					}
 				});
-
-                const oModel = new JSONModel(sap.ui.require.toUrl("listenanzeige/mock/products.json"));
-			    this.getView().setModel(oModel);
-
             },
+
+            ExtractoData: function (data) {
+				let oData = [];
+                let oResults = new JSONModel();
+                let strDay ;
+                let strMonth ;
+                let strDate ;
+                let strYear;
+
+				data.forEach(function (element) {
+                    strDay = element.Startdate.getDate()
+                    if (strDay.length === 1){
+                        strDay = '0' + strDay;
+                    }
+                    strMonth =  (1 + element.Startdate.getMonth()).toString();
+                    if (strMonth.length === 1){
+                        strMonth = '0' + strMonth;
+                    } 
+                    strDate = strDay + '.' + strMonth + '.' + element.Startdate.getFullYear();
+                    
+                    oData.push({
+                        "BatchID": element.Batchid,
+                        "Customer": element.Customer,
+                        "Plant": element.Plant,
+                        "Product": element.Product,
+                        "Startdate": strDate,
+                        "Amount": element.Amount,
+                        "Unit": element.Unit
+                    })
+				});
+
+                oResults = ( { 'ProductCollection': oData })
+				return oResults;
+			},
 
             onAfterRendering() {
                

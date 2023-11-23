@@ -2,10 +2,16 @@
     xmlns:mvc="sap.ui.core.mvc" 
 	displayBlock="true"
     xmlns="sap.m">
-    <List
+	<Page showHeader="false" >
+		<subHeader>
+			<Toolbar>
+				<SearchField width="100%" search=".onSearch" />
+			</Toolbar>
+		</subHeader>		
+		<List
 		id="ListID"
 		items="{
-			path: '/ProductCollection',
+			path: 'ProductCollectionModel>/ProductCollection',
 			sorter: {
 				path: 'Customer',
 				descending: false,
@@ -16,7 +22,7 @@
 		<headerToolbar>
 			<OverflowToolbar>
 				<Title
-					text="{i18n>title}" />
+					text="{i18n>listTitle}" />
 				<ToolbarSpacer />
 				<ToggleButton
 					icon="sap-icon://menu"
@@ -24,26 +30,31 @@
 					press="onToggleContextMenu" />
 			</OverflowToolbar>
 		</headerToolbar>
+		<infoToolbar>
+			<OverflowToolbar
+				active="true"
+				press="handleInfobarPress" >
+				<Label id="infoLabelID" text="{ErrorModel>/ErrorMessage}" />
+			</OverflowToolbar>
+		</infoToolbar>
+
 		<ObjectListItem
-			title="{Name}"
+			title="{ProductCollectionModel>Plant}"
 			type="Active"
 			press="onListItemPress"
 			number="{
-				parts:[{path:'Price'},{path:'CurrencyCode'}],
+				parts:[{path:'ProductCollectionModel>Amount'},{path:'ProductCollectionModel>Unit'}],
 				type: 'sap.ui.model.type.Currency',
 				formatOptions: {showMeasure: false}
 			}"
-			numberUnit="{CurrencyCode}">
+			numberUnit="{ProductCollectionModel>Unit}">
 			<firstStatus>
-				<ObjectStatus
-					text="{Status}"
-					state="{
-						path: 'Status',
-						formatter: 'sap.m.sample.ObjectListItem.Formatter.status'
-					}" />
+				<ObjectStatus text="{ProductCollectionModel>Product}"/>	
 			</firstStatus>
-			<ObjectAttribute text="{WeightMeasure} {WeightUnit}" />
-			<ObjectAttribute text="{Width} x {Depth} x {Height} {DimUnit}" />
+			<ObjectAttribute text="{ProductCollectionModel>BatchID}" />
+			<ObjectAttribute text="{ProductCollectionModel>Startdate}" />
 		</ObjectListItem>
 	</List>
+	</Page>
+    
 </mvc:View>
