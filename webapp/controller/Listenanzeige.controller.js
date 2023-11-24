@@ -75,14 +75,14 @@ sap.ui.define([
 			},
 
             onSearch(oEvent) {
+                this.getView().setModel(oInitProductCollectionModel,'ProductCollectionModel');
                 let sValue = oEvent.getParameter("query");
-                let oProductCollectionModel = this.getView().getModel('ProductCollectionModel').getData();
+                let oErrorModel = new JSONModel();                
                 let oModel = new JSONModel();
-                let arrModel = [];
                 let oData = [];
                 let intCounter = 0;
-                let intCounter2 = 0;
-                let oResult = new JSONModel();
+                let oResult = new JSONModel();                
+                let oProductCollectionModel = this.getView().getModel('ProductCollectionModel').getData();
 
                 if (sValue !== ''){                
                     for (intCounter = 0; intCounter < oProductCollectionModel.ProductCollection.length; intCounter++){                        
@@ -95,16 +95,18 @@ sap.ui.define([
                         || oProductCollectionModel.ProductCollection[intCounter].Unit.toLowerCase().indexOf(sValue) > -1) {
                             oData.push(oProductCollectionModel.ProductCollection[intCounter]);
                         } 
-                    }                     
-                    
-                    oResult = ( { 'ProductCollection': oData })
-                    oModel.setData(oResult);
-                    this.getView().setModel(oModel,'ProductCollectionModel');
+                    }  
+                    if (oData.length > 0) {
+                        oResult = ( { 'ProductCollection': oData })
+                        oModel.setData(oResult);
+                        this.getView().setModel(oModel,'ProductCollectionModel');
+                    }                    
+                    oErrorModel.setData( {ErrorMessage : oData.length + ' Data found!' });
                 } else {
-                    // insert full Model
-                    this.getView().setModel(oInitProductCollectionModel,'ProductCollectionModel');
+                    // insert full Model                   
+                    oErrorModel.setData( {ErrorMessage : 'No Data found!' });
                 }
-
+                this.getView().setModel(oErrorModel, 'ErrorModel');
             },
 
             onAfterRendering() {
