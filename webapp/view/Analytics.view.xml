@@ -1,0 +1,30 @@
+<mvc:View controllerName="listenanzeige.controller.Analytics"
+	xmlns="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:microchart="sap.suite.ui.microchart"
+	xmlns:toggle="sap.ui.webc.main">
+	<Page showNavButton="true" navButtonPress=".onNavBack">
+		<ScrollContainer height="100%" width="100%" vertical="true" focusable="true">
+			<l:VerticalLayout id="containerLayout" width="100%">
+				<l:BlockLayout id="BlockLayout" background="Dashboard">
+					<l:BlockLayoutRow accentCells="Accent1">
+						<l:BlockLayoutCell id="cell1" width="2" title="Customer">
+							<Text text="Customer" />
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+					<l:BlockLayoutRow accentCells="Accent1">
+						<l:BlockLayoutCell id="cell2" width="2" title="Projektaufteilung">						
+							<microchart:InteractiveDonutChart id="donutChart" selectionChanged="onSelectionChanged" segments="{/DonutChartData}" displayedSegments="{= ${/DonutChartData}.length}">
+								<microchart:segments>
+									<microchart:InteractiveDonutChartSegment label="{Customer}" value="{Product}" />
+								</microchart:segments>
+							</microchart:InteractiveDonutChart>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+			</l:VerticalLayout>
+		</ScrollContainer>
+	</Page>
+</mvc:View>

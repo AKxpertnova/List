@@ -27,7 +27,7 @@
 				<ToggleButton
 					icon="sap-icon://menu"
 					tooltip="Enable / Disable Custom Context Menu"
-					press="onExportPressed" />
+					press="onAnalyticsPressed" />
 			</OverflowToolbar>
 		</headerToolbar>
 		<infoToolbar>

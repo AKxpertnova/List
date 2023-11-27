@@ -102,6 +102,13 @@
           "target": [
             "TargetListenanzeige"
           ]
+        },
+        {
+        "name": "Analytics",
+          "pattern": "Analytics",
+          "target": [
+            "Analytics"
+          ]
         }
       ],
       "targets": {
@@ -111,7 +118,12 @@
           "clearControlAggregation": false,
           "viewId": "Listenanzeige",
           "viewName": "Listenanzeige"
-        }
+        },        
+        "Analytics": {
+          "viewId": "Analytics",
+          "viewName": "Analytics",
+          "viewLevel": 2
+        }        
       }
     },
     "rootView": {

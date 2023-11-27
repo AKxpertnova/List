@@ -127,7 +127,6 @@ sap.ui.define([
                 let intCounter = 0;
                 let oModel = this.getView().getModel('ProductCollectionModel').getData();
                 let oData;
-                let oDialogData = [];
                 let strArrAmount = [];
                 let intX = 0;
                 let strTempString;
@@ -169,9 +168,48 @@ sap.ui.define([
                 this.oDialog.mAggregations.content[0].mAggregations.items[2].mAggregations.content[0].mProperties.value = strProduct
                 this.oDialog.mAggregations.content[0].mAggregations.items[3].mAggregations.content[0].mProperties.value = strBatchID
                 this.oDialog.mAggregations.content[0].mAggregations.items[4].mAggregations.content[0].mProperties.value = strStartDate
-                this.oDialog.mAggregations.content[0].mAggregations.items[5].mAggregations.content[0].mProperties.value = strAmount
+                this.oDialog.mAggregations.content[0].mAggregations.items[5].mAggregations.content[0].mProperties.value = strAmount                
                 this.oDialog.mAggregations.content[0].mAggregations.items[7].mAggregations.content[0].mProperties.selectedKey = strUnit; 
-                
+
+                // Handling Slider                
+                let intSliderMax = 0;
+                let intSliderStep = 1;
+
+                // SliderSteps
+                switch(strUnit) {
+                    case 'mg':
+                        intSliderStep = 0.1;
+                        break;
+                    case 'ml':
+                        intSliderStep = 0.1;
+                        break;
+                    case 'L':
+                        intSliderStep = 10;
+                        break;
+                    case '%':
+                        intSliderStep = 1;
+                        break;
+                    case 'g':
+                        intSliderStep = 1;
+                        break;
+                    case 'kg':
+                        intSliderStep = 10;
+                        break;
+                    default:
+                        intSliderStep = 1;
+                    }                
+                // Slider Max
+                if (parseFloat(strAmount) < 100) {
+                    intSliderMax = 250;
+                } else if (parseFloat(strAmount) < 1000) {
+                    intSliderMax = 2500;
+                } else {
+                    intSliderMax = 25000;
+                }
+                this.oDialog.mAggregations.content[0].mAggregations.items[6].mAggregations.content[0].mProperties.step = intSliderStep
+                this.oDialog.mAggregations.content[0].mAggregations.items[6].mAggregations.content[0].mProperties.max = intSliderMax
+                this.oDialog.mAggregations.content[0].mAggregations.items[6].mAggregations.content[0].mProperties.value =parseFloat(strAmount);      
+                     
                 //wip
                 /*
                 oDialogData.push({
@@ -357,10 +395,16 @@ sap.ui.define([
                 this.oDialog.close();
             },
 
+            //wip
             sliderHandleChange(oEvent) {
                 let sAmount = oEvent.mParameters.value;
                 let oModel = this.getView().getModel()
                 this.oDialog.mAggregations.content[0].mAggregations.items[5].mAggregations.content[0].setProperty("/value",sAmount);    //mProperties.value            
+            },
+
+            onAnalyticsPressed() {
+                var oRouter = this.getOwnerComponent().getRouter();
+				oRouter.navTo("Analytics")
             }
 
         });

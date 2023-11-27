@@ -1,4 +1,5 @@
 <core:FragmentDefinition
+    xmlns:s="sap.ui.webc.main"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:core="sap.ui.core"
 	xmlns:l="sap.ui.layout"
@@ -48,8 +49,8 @@
                         width="200px"
                         type="Number" />
                 </InputListItem>
-                <InputListItem label="Set Amount">
-                    <Slider id="SetAmountInputID" min="0" max="1000" value="7" width="200px" change="sliderHandleChange"/>     
+                <InputListItem label="Set Amount">                
+                     <s:Slider id="SetAmountInputID" min="0" max="100" value="0" step="1" width="200px" change="sliderHandleChange" showTickmarks="true"/> 
                 </InputListItem>
                 <InputListItem label="Unit">
                    <Select id="UnitInputID" selectedKey="">
