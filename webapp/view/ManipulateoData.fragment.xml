@@ -1,0 +1,71 @@
+<core:FragmentDefinition
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+	xmlns:l="sap.ui.layout"
+	xmlns="sap.m">
+    <Dialog id="ManipulateDialogID" title="Handle oData" draggable="false" contentWidth="50%" contentHeight="29%">
+	        <List
+                >
+                <InputListItem label="Customer">
+                    <Input id="CustomerInputID"
+                        placeholder="Customer"
+                        width="200px"
+                        value=""
+                        type="Text" />
+                </InputListItem>
+                <InputListItem label="Plant">
+                     <Input id="PlantInputID"
+                        placeholder="Plant"
+                        width="200px"
+                        value=""
+                        type="Text" />
+                </InputListItem>
+                <InputListItem label="Product">
+                     <Input id="ProductInputID"
+                        placeholder="Product"
+                        width="200px"
+                        value=""
+                        type="Text" />
+                </InputListItem>
+                <InputListItem label="BatchID">
+                     <Input id="batchIDInputID"
+                        placeholder="BatchID"
+                        width="200px"
+                        value=""
+                        type="Number" />
+                </InputListItem>
+                <InputListItem label="Startdate">
+                     <Input id="StartDateInputID"
+                        placeholder="Date"
+                        width="200px"
+                        value=""
+                        type="Date" />
+                </InputListItem>
+                <InputListItem label="Amount">                                 
+                    <Input id="AmountInputID"
+                        placeholder="Amount"
+                        value=""
+                        width="200px"
+                        type="Number" />
+                </InputListItem>
+                <InputListItem label="Set Amount">
+                    <Slider id="SetAmountInputID" min="0" max="1000" value="7" width="200px" change="sliderHandleChange"/>     
+                </InputListItem>
+                <InputListItem label="Unit">
+                   <Select id="UnitInputID" selectedKey="">
+                        <core:Item key="mg" text="mg" />
+                        <core:Item key="ml" text="ml" />
+                        <core:Item key="L" text="L" />
+                        <core:Item key="%" text="%" />
+                        <core:Item key="g" text="g" />
+                        <core:Item key="Kg" text="Kg" />
+                    </Select>
+                </InputListItem>
+            </List>
+            <buttons>
+                <Button text="Change" press=".onChangeDialog"/>
+                <Button text="Delete" press=".onDeleteDialog"/>
+                <Button text="Cancel" press=".onCancelDialog"/>
+            </buttons>
+    </Dialog>
+</core:FragmentDefinition>
